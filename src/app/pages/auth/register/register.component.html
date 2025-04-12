@@ -1,0 +1,212 @@
+<div class="gradient-container">
+  <div class="header-view">
+    <div class="d-flex header-section">
+      <div class="user-name">
+        <div class="avatar" [ngStyle]="{ 'width.px': '45', 'height.px': '45' }">
+          <span class="initials">{{ initial }}</span>
+        </div>
+        <h3 style="color: #ffffff;" class="text-content">{{ username }}</h3>
+      </div>
+      <div class="logout-new-button">
+        <div id="quick_search_button" class="search search-input">
+          <i class="fa fa-search" aria-hidden="true"></i>
+          <!-- (keyup.enter)="validateLetters()" (input)="validateLetters()" [(ngModel)]="filterDataObj.search_params.search_text" minlength="4"  -->
+          <input placeholder="search" #searchInput (input)="searchByTitle(searchInput.value)" type="search"
+            class="search-input-box">
+        </div>
+        <span class="create-new-item" (click)="resetTask();isCreate=true" data-bs-toggle="modal"
+          data-bs-target="#exampleModal">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <span class="text-content">New Task</span>
+        </span>
+        <span class="create-new-item" data-bs-toggle="modal" data-bs-target="#dashboardModal">
+          <i class="fa fa-pie-chart" aria-hidden="true"></i>
+          <span class="text-content">Dashboard</span>
+        </span>
+        <button class="logout-button" (click)="logout()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <span class="text-content">Logout</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="layout-body" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="200"
+    (scrolled)="onScroll()">
+    <ng-container *ngIf="tableData?.length && !showSpinner;else showEmptyOrLoader">
+      <table class="table-container">
+        <thead class="table-header-section">
+          <tr>
+            <th class="sticky-header">ID</th>
+            <th class="sticky-header">Title</th>
+            <th class="sticky-header">State</th>
+            <th class="sticky-header">Category</th>
+            <th class="sticky-header">Priority</th>
+            <th class="sticky-header">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-body">
+          <tr *ngFor="let item of tableData;let i=index" class="display-section">
+            <td>{{i+1}}</td>
+            <td class="title-section">
+              <span>{{ item.title }}</span>
+            </td>
+            <td>{{ getStatus(item.state)?.label }}</td>
+            <td>
+              <i class="fa fa-tag" style="padding-right: 3px;" aria-hidden="true"></i>
+              <span>{{ getTag(item.category)?.label }}</span>
+            </td>
+            <td>
+              <span [style.background]="getPriority(item.priority)?.color" class="priority-section">
+                {{ getPriority(item.priority)?.initial }}
+              </span>
+            </td>
+            <td>
+              <div class="expand-task">
+                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li class="drop-down-li" (click)="deleteTask(item?.id)"><i class="fa fa-trash"
+                      aria-hidden="true"></i><a class="dropdown-item drop-down">Delete</a></li>
+                  <li class="drop-down-li" (click)="isCreate=false;editTask(item)" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"><i class="fa fa-pencil" aria-hidden="true"></i><a
+                      class="dropdown-item">Edit</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #showEmptyOrLoader>
+      <ng-container *ngIf="tableData?.length==0 && !showSpinner;else showSpinnerTemp">
+        <div class="d-flex" style="justify-content: center;align-items: center;vertical-align: middle;height: 885px;">
+          <div class="empty w-70 h-50">
+            <img class="w-80 h-80" src="../../../../assets/no-data.svg" />
+            <h3 class="m-0 pt-4 text-center">No Task</h3>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #showSpinnerTemp>
+        <div class="d-flex" style="justify-content: center;align-items: center;vertical-align: middle;height: 885px;">
+          <div class="spinner-loader"
+            [ngStyle]="{'background':'radial-gradient(farthest-side,'+ 'black' +' 94%,#0000) top/8px 8px no-repeat,conic-gradient(#0000 30%,'+'black'+')','width':'30px'}">
+          </div>
+          <style>
+            .spinner-loader {
+              aspect-ratio: 1;
+              border-radius: 50%;
+              -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+              animation: l13 0.7s infinite linear;
+            }
+
+            @keyframes l13 {
+              100% {
+                transform: rotate(1turn)
+              }
+            }
+          </style>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+  <!--create item page-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered custom-modal-size">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Task</h5>
+          <button type="button" #closeBtn class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form #taskForm="ngForm">
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="taskTitle" class="form-label">Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="taskTitle" name="title" placeholder="Enter Title"
+                [(ngModel)]="task.title" required #titleRef="ngModel" />
+              <div *ngIf="titleRef.invalid && titleRef.touched" class="text-danger small">
+                Title is required.
+              </div>
+            </div>
+
+            <!-- State -->
+            <div class="mb-3">
+              <label for="taskState" class="form-label">State</label>
+              <select class="form-select" id="taskState" name="state" [(ngModel)]="task.state">
+                <ng-container *ngFor="let state of statusOfTask">
+                  <option [value]="state?.value">{{state?.label}}</option>
+                </ng-container>
+              </select>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+              <label for="taskCategory" class="form-label">Category</label>
+              <select class="form-control" id="taskCategory" name="category" [(ngModel)]="task.category">
+                <ng-container *ngFor="let state of tagOfTask">
+                  <option [value]="state?.value">{{state?.label}}</option>
+                </ng-container>
+              </select>
+            </div>
+
+            <!-- Priority -->
+            <div class="mb-3">
+              <label for="taskPriority" class="form-label">Priority</label>
+              <select class="form-select" id="taskPriority" name="priority" [(ngModel)]="task.priority">
+                <ng-container *ngFor="let state of priorityArray">
+                  <option [value]="state?.value">{{state?.label}}</option>
+                </ng-container>
+              </select>
+            </div>
+
+            <!--Description-->
+            <div class="mb-3">
+              <label for="description" class="form-label">Title</label>
+              <textarea class="form-control" type="text" name="text" rows="3" [(ngModel)]="task.desc"
+                placeholder="Add description"></textarea>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" (click)="createOrUpdateTask()" [disabled]="taskForm.invalid"
+            class="btn btn-primary create-task-button">Create Task</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--dashboard page-->
+  <div class="modal fade" id="dashboardModal" tabindex="-1" aria-labelledby="dashLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered custom-modal-size">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="center-div dash-columns">
+            <h5 class="modal-title" id="exampleModalLabel">Dashboard View</h5>
+            <div class="center-div">
+              <span for="taskCategory" class="form-label mb-0">Group By</span>
+              <span>
+                <select (change)="groupChange()" class="form-control mb-0" id="groupCategory" name="groupcategory"
+                  [(ngModel)]="selectedGroup">
+                  <option value="priority">Priority</option>
+                  <option value="state">Status</option>
+                  <option value="category">Category</option>
+                </select>
+              </span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <echarts [options]="chartOptions" class="demo-chart" style="height: 400px;width: 100%;display: flex;">
+          </echarts>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

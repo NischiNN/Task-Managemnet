@@ -1,0 +1,166 @@
+.container-fluid {
+  padding: 0px !important;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  height: 100%;
+  background-color: #ffffff;
+  overflow: auto;
+}
+
+@media only screen and (max-width: 360px) {
+  .login-image {
+    height: 336px !important;
+  }
+}
+
+.loginPageScreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: #fff;
+}
+
+.loginPageScreen .img-fluid {
+  object-fit: contain !important;
+}
+
+.loginHeader {
+  text-align: center
+}
+
+#loginForm {
+  background-color: white !important;
+}
+
+.input {
+  border: 0px;
+  border-bottom: solid 1px #edebf1;
+  width: 100%;
+  padding: 5px;
+  margin-top: 20px;
+  outline: none;
+}
+
+.login {
+  background-color: #217AA6;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0;
+  padding: 10px 60px;
+  color: white;
+}
+
+.signup {
+  border: #217AA6 1px solid;
+  border-radius: 5px;
+  padding: 9px 50px;
+  color: #304767;
+}
+
+.fluid-img {
+  width: 100%;
+  height: auto
+}
+
+.eyeIcon {
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 991px) {
+  .login {
+    padding: 8px 40px;
+  }
+
+  .signup {
+    padding: 7px 30px;
+  }
+
+
+
+}
+
+
+@media only screen and (min-device-width: 992px) and (max-device-width: 1366px) {
+  .login {
+    padding: 8px 30px;
+  }
+
+  .signup {
+    padding: 7px 20px;
+  }
+
+
+
+}
+
+.separator {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .25em;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+  .app-body {
+    margin-top: 0px !important;
+  }
+}
+
+
+.refresh {
+  background-color: #2E4765;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  margin-top: 6px;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.image-section-content {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.welcome-page-container {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 360px) {
+
+  .image-section-content,
+  .welcome-page-container {
+    height: fit-content !important;
+  }
+
+  .container-fluid .row {
+    display: block !important;
+  }
+}
