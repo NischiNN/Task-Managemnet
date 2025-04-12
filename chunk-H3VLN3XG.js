@@ -1,0 +1,1 @@
+import{d as t}from"./chunk-MRJ2UCUH.js";var o=[{path:"login",title:"Login",loadComponent:()=>t(void 0,null,function*(){return(yield import("./chunk-CNWVZVYR.js")).LoginComponent})},{path:"register",title:"Register",loadComponent:()=>t(void 0,null,function*(){return(yield import("./chunk-B5FHHRKK.js")).RegisterComponent})}];export{o as routes};
