@@ -148,3 +148,7 @@ docker run --rm -p 8080:80 -d angular-boilerplate:latest
 | `stylelint`     | Runs the style linter                                    | `npm run stylelint`     | `yarn stylelint`     | `pnpm stylelint`     |
 | `stylelint:fix` | Runs the style linter and fixes any style linting errors | `npm run stylelint:fix` | `yarn stylelint:fix` | `pnpm stylelint:fix` |
 | `format`        | Formats the code with prettier                           | `npm run format`        | `yarn format`        | `pnpm format`        |
+
+Routing start with /auth/login
+Angular cli-v16
+node-v16.14 and above
