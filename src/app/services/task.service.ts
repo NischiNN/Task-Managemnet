@@ -17,27 +17,27 @@ export class TaskService {
   constructor(private http: HttpClient, private customStorageService: CustomStorageService, private toasterService: ToasterService) { }
 
   getTasks() {
-    let apiUrl: string = `${this.hostUrl}/task`;
+    let apiUrl: string = `${this.hostUrl}/api/task`;
     return this.getQuery(apiUrl);
   }
 
   getTaskById(id: number) {
-    let apiUrl: string = `${this.hostUrl}/${id}`;
+    let apiUrl: string = `${this.hostUrl}/api/${id}`;
     return this.getQuery(apiUrl);
   }
 
   createTask(task: any) {
-    var apiUrl = `${this.hostUrl}/task`
+    var apiUrl = `${this.hostUrl}/api/task`
     return this.postQuery(apiUrl, task);
   }
 
   updateTask(task: any, id: string) {
-    var apiUrl = `${this.hostUrl}/task/${id}`
+    var apiUrl = `${this.hostUrl}/api/task/${id}`
     return this.putQuery(apiUrl, task);
   }
 
   deleteTask(id: number) {
-    var apiUrl = `${this.hostUrl}/task/${id}`
+    var apiUrl = `${this.hostUrl}/api/task/${id}`
     return this.deleteQuery(apiUrl);
   }
 
@@ -45,7 +45,7 @@ export class TaskService {
     let headers = new HttpHeaders()
       .set("Content-Type", "application/json")
     return this.http
-      .post(`${this.hostUrl}/user/login`, JSON.stringify(data), { headers, withCredentials: true, observe: 'response' }).pipe(
+      .post(`${this.hostUrl}/api/user/login`, JSON.stringify(data), { headers, withCredentials: true, observe: 'response' }).pipe(
         map((response: any) => {
           localStorage.setItem("clearLocalStorageTime", "" + new Date().getTime());
           sessionStorage.setItem("clearSessionStorageTime", "" + new Date().getTime());
@@ -54,7 +54,7 @@ export class TaskService {
   }
 
   createUser(name: any, email: any, password: any) {
-    var apiUrl = `${this.hostUrl}/user/signup`;
+    var apiUrl = `${this.hostUrl}/api/user/signup`;
     var userData: any = {}
     userData["name"] = name
     userData["email"] = email
